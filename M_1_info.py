@@ -228,14 +228,14 @@ else:
     score_style_dict.update({k: "{:.0f}" for k in judges})
 
     styled_score = (
-            df_score.style
+            df_score_indexed.style
             .background_gradient(cmap="coolwarm", subset=["合計得点", "得点率"]+judges)
             .background_gradient(cmap="coolwarm", subset=["偏差値"], vmin=25, vmax=75)
             .format(score_style_dict)
         )
     
     styled_hensachi = (
-            df_hensachi.style
+            df_hensachi_indexed.style
             .background_gradient(cmap="coolwarm", subset=["合計得点", "得点率"])
             .background_gradient(cmap="coolwarm", subset=["偏差値"]+judges, vmin=25, vmax=75)
             .format(hensachi_style_dict)
