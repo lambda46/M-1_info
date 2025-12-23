@@ -207,6 +207,8 @@ else:
     df_score = df_score.sort_values("出番順").reset_index(drop=True)
     df_hensachi = df_hensachi.sort_values("出番順").reset_index(drop=True)
     df_final_score = df_final_score.sort_values("出番順").reset_index(drop=True)
+    df_score_indexed = df_score.set_index("コンビ名")
+    df_hensachi_indexed = df_hensachi.set_index("コンビ名")
 
     hensachi_style_dict = {
                 "順位": "{:.0f}",  # "合計得点"を整数表示に設定
