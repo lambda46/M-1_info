@@ -47,11 +47,8 @@ def my_round(x, decimals=0):
 year_list = list(range(2001, 2011))+list(range(2015, 2026))
 year_list.sort(reverse=True)
 
-m1_score = pd.read_csv("data/得点/1st得点.csv")
-m1_result = pd.read_csv("data/結果/決勝戦結果.csv")
-
 st.set_page_config(layout='wide', page_title="M-1 Final Info", page_icon="")
-st.title("M-1グランプリ 歴代1stラウンド得点")
+st.title("M-1グランプリ 決勝1stラウンド得点")
 
 cols = st.columns(5)
 df_1st_round = df[df["round_stage"] == "1st"]
