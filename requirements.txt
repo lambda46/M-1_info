@@ -5,3 +5,4 @@ plotly
 sqlalchemy
 pymysql
 streamlit-option-menu
+matplotlib
