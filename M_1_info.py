@@ -209,6 +209,7 @@ else:
     df_final_score = df_final_score.sort_values("出番順").reset_index(drop=True)
     df_score_indexed = df_score.set_index("コンビ名")
     df_hensachi_indexed = df_hensachi.set_index("コンビ名")
+    df_final_indexed = df_final_score.set_index("コンビ名")
 
     hensachi_style_dict = {
                 "順位": "{:.0f}",  # "合計得点"を整数表示に設定
@@ -241,7 +242,7 @@ else:
             .format(hensachi_style_dict)
         )
     styled_final_data = (
-            df_final_score.style
+            df_final_indexed.style
             .format({
                 "順位": "{:.0f}",  # "合計得点"を整数表示に設定
             })
@@ -287,5 +288,15 @@ else:
                         )
     st.plotly_chart(box_chart)
     st.header("最終決戦 得票数")
-    st.dataframe(styled_final_data, width="stretch")
+    st.dataframe(
+        styled_final_data,
+        width="stretch",
+        column_config={
+            # インデックス名（"コンビ名"）を指定して設定します
+            "コンビ名": st.column_config.TextColumn(
+                "コンビ名",     # ヘッダーに表示する名前
+                width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+            )
+        }
+    )
 
