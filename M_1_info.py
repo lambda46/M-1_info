@@ -128,9 +128,10 @@ if year == "通算":
                 
         df_1st_round = df_1st_round[["コンビ名", "事務所", "年", "出番順", "順位", "得点", "得点率", "得点（7人換算）", "偏差値"]]
         #df_1st_round = df_1st_round.reset_index(drop=True)
+        df_1st_indexed = df_1st_round.set_index("コンビ名")
         
         styled_data = (
-                df_1st_round.style
+                df_1st_indexed.style
                 .background_gradient(cmap="coolwarm", subset=["得点", "得点（7人換算）", "得点率"])
                 .background_gradient(cmap="coolwarm", subset=["偏差値"], vmin=25, vmax=75)
                 .format({
@@ -141,7 +142,17 @@ if year == "通算":
                     "偏差値": "{:.2f}",     # "偏差値"を小数点1桁に設定
                 })
             )
-        st.dataframe(styled_data, width="stretch")
+        st.dataframe(
+            styled_data,
+            width="stretch",
+            column_config={
+                # インデックス名（"コンビ名"）を指定して設定します
+                "コンビ名": st.column_config.TextColumn(
+                    "コンビ名",     # ヘッダーに表示する名前
+                    width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+                )
+            }
+        )
 
 else:
     with cols[1]:
