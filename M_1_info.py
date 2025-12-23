@@ -247,9 +247,31 @@ else:
             })
         )
     if choice == "得点":
-        st.dataframe(styled_score, width="stretch")
+        # --- 修正後 ---
+        st.dataframe(
+            styled_score,
+            width="stretch",
+            column_config={
+                # インデックス名（"コンビ名"）を指定して設定します
+                "コンビ名": st.column_config.TextColumn(
+                    "コンビ名",     # ヘッダーに表示する名前
+                    width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+                )
+            }
+        )
     else:
-        st.dataframe(styled_hensachi, width="stretch")
+        # --- 修正後 ---
+        st.dataframe(
+            styled_hensachi,
+            width="stretch",
+            column_config={
+                # インデックス名（"コンビ名"）を指定して設定します
+                "コンビ名": st.column_config.TextColumn(
+                    "コンビ名",     # ヘッダーに表示する名前
+                    width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+                )
+            }
+        )
 
     st.write(f"平均点：{my_round(average_score, 1)}点")
 
