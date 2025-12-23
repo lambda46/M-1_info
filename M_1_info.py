@@ -135,7 +135,13 @@ if year == "通算":
             df_1st_indexed.style
             .background_gradient(cmap="coolwarm", subset=["得点", "得点（7人換算）", "得点率"])
             .background_gradient(cmap="coolwarm", subset=["偏差値"], vmin=25, vmax=75)
-            # ... (以下同じ)
+            .format({
+                "順位": "{:.0f}",  # "合計得点"を整数表示に設定
+                "合計得点": "{:.0f}",  # "合計得点"を整数表示に設定
+                "得点率": "{:.2f}",    # "平均点"を小数点1桁に設定
+                "得点（7人換算）": "{:.1f}",     # "偏差値"を小数点1桁に設定
+                "偏差値": "{:.2f}",     # "偏差値"を小数点1桁に設定
+            })
         )
         
         st.dataframe(
