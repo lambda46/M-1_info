@@ -13,7 +13,6 @@ m1_engine = create_engine(db_path, connect_args={"check_same_thread": False}, ec
 
 
 def calculate_hensachi(x):
-    # 標準偏差が0（全員同点など）の場合はエラーになるのを防ぐため、0なら偏差値50を返す
     if x.std() == 0:
         return 50
     return 50 + 10 * (x - x.mean()) / x.std()
@@ -136,11 +135,11 @@ if year == "通算":
             .background_gradient(cmap="coolwarm", subset=["得点", "得点（7人換算）", "得点率"])
             .background_gradient(cmap="coolwarm", subset=["偏差値"], vmin=25, vmax=75)
             .format({
-                "順位": "{:.0f}",  # "合計得点"を整数表示に設定
-                "合計得点": "{:.0f}",  # "合計得点"を整数表示に設定
-                "得点率": "{:.2f}",    # "平均点"を小数点1桁に設定
-                "得点（7人換算）": "{:.1f}",     # "偏差値"を小数点1桁に設定
-                "偏差値": "{:.2f}",     # "偏差値"を小数点1桁に設定
+                "順位": "{:.0f}",
+                "合計得点": "{:.0f}",
+                "得点率": "{:.2f}",
+                "得点（7人換算）": "{:.1f}",
+                "偏差値": "{:.2f}",
             })
         )
         
@@ -148,9 +147,7 @@ if year == "通算":
             styled_data,
             width="stretch",
             column_config={
-                # コンビ名の設定（そのままでOK）
                 "コンビ名": st.column_config.TextColumn("コンビ名", width="medium"),
-                # 年の設定（必要であれば追加）
                 "年": st.column_config.NumberColumn("年", format="%d"), 
             }
         )
@@ -224,18 +221,18 @@ else:
     df_final_indexed = df_final_score.set_index("コンビ名")
 
     hensachi_style_dict = {
-                "順位": "{:.0f}",  # "合計得点"を整数表示に設定
-                "合計得点": "{:.0f}",  # "合計得点"を整数表示に設定
-                "得点率": "{:.2f}",    # "平均点"を小数点1桁に設定
-                "得点（7人換算）": "{:.1f}",     # "偏差値"を小数点1桁に設定
-                "偏差値": "{:.2f}",     # "偏差値"を小数点1桁に設定
+                "順位": "{:.0f}",
+                "合計得点": "{:.0f}",
+                "得点率": "{:.2f}",
+                "得点（7人換算）": "{:.1f}",
+                "偏差値": "{:.2f}",
             }
     score_style_dict = {
-                "順位": "{:.0f}",  # "合計得点"を整数表示に設定
-                "合計得点": "{:.0f}",  # "合計得点"を整数表示に設定
-                "得点率": "{:.2f}",    # "平均点"を小数点1桁に設定
-                "得点（7人換算）": "{:.1f}",     # "偏差値"を小数点1桁に設定
-                "偏差値": "{:.2f}",     # "偏差値"を小数点1桁に設定
+                "順位": "{:.0f}",
+                "合計得点": "{:.0f}",
+                "得点率": "{:.2f}",
+                "得点（7人換算）": "{:.1f}",
+                "偏差値": "{:.2f}",
             }
     hensachi_style_dict.update({k: "{:.2f}" for k in judges})
     score_style_dict.update({k: "{:.0f}" for k in judges})
@@ -256,32 +253,29 @@ else:
     styled_final_data = (
             df_final_indexed.style
             .format({
-                "順位": "{:.0f}",  # "合計得点"を整数表示に設定
+                "順位": "{:.0f}",
             })
         )
     if choice == "得点":
-        # --- 修正後 ---
         st.dataframe(
             styled_score,
             width="stretch",
             column_config={
-                # インデックス名（"コンビ名"）を指定して設定します
                 "コンビ名": st.column_config.TextColumn(
-                    "コンビ名",     # ヘッダーに表示する名前
-                    width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+                    "コンビ名",
+                    width="medium"
                 )
             }
         )
     else:
-        # --- 修正後 ---
         st.dataframe(
             styled_hensachi,
             width="stretch",
             column_config={
-                # インデックス名（"コンビ名"）を指定して設定します
+
                 "コンビ名": st.column_config.TextColumn(
-                    "コンビ名",     # ヘッダーに表示する名前
-                    width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+                    "コンビ名",
+                    width="medium"
                 )
             }
         )
@@ -304,10 +298,9 @@ else:
         styled_final_data,
         width="stretch",
         column_config={
-            # インデックス名（"コンビ名"）を指定して設定します
             "コンビ名": st.column_config.TextColumn(
-                "コンビ名",     # ヘッダーに表示する名前
-                width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+                "コンビ名",
+                width="medium"
             )
         }
     )
