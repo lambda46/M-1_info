@@ -128,29 +128,24 @@ if year == "通算":
                 
         df_1st_round = df_1st_round[["コンビ名", "事務所", "年", "出番順", "順位", "得点", "得点率", "得点（7人換算）", "偏差値"]]
         #df_1st_round = df_1st_round.reset_index(drop=True)
-        df_1st_indexed = df_1st_round.set_index("コンビ名")
+        # 変更後：リストで渡してマルチインデックスにする
+        df_1st_indexed = df_1st_round.set_index(["コンビ名", "年"])
         
         styled_data = (
-                df_1st_indexed.style
-                .background_gradient(cmap="coolwarm", subset=["得点", "得点（7人換算）", "得点率"])
-                .background_gradient(cmap="coolwarm", subset=["偏差値"], vmin=25, vmax=75)
-                .format({
-                    "順位": "{:.0f}",  # "合計得点"を整数表示に設定
-                    "合計得点": "{:.0f}",  # "合計得点"を整数表示に設定
-                    "得点率": "{:.2f}",    # "平均点"を小数点1桁に設定
-                    "得点（7人換算）": "{:.1f}",     # "偏差値"を小数点1桁に設定
-                    "偏差値": "{:.2f}",     # "偏差値"を小数点1桁に設定
-                })
-            )
+            df_1st_indexed.style
+            .background_gradient(cmap="coolwarm", subset=["得点", "得点（7人換算）", "得点率"])
+            .background_gradient(cmap="coolwarm", subset=["偏差値"], vmin=25, vmax=75)
+            # ... (以下同じ)
+        )
+        
         st.dataframe(
             styled_data,
             width="stretch",
             column_config={
-                # インデックス名（"コンビ名"）を指定して設定します
-                "コンビ名": st.column_config.TextColumn(
-                    "コンビ名",     # ヘッダーに表示する名前
-                    width="medium"  # 幅の設定: "small", "medium", "large" から選べます
-                )
+                # コンビ名の設定（そのままでOK）
+                "コンビ名": st.column_config.TextColumn("コンビ名", width="medium"),
+                # 年の設定（必要であれば追加）
+                "年": st.column_config.NumberColumn("年", format="%d"), 
             }
         )
 
