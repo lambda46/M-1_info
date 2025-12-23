@@ -16,10 +16,8 @@ def connection_db():
     )
     return engine
 
-config = configparser.ConfigParser()
-config.read("/Users/lambda/Python/config.ini", encoding='utf-8')
-
-# config.ini ではなく st.secrets を使う
+# st.secrets から情報を取得するように書き換えます
+# ※[]の中身（キー名）は、後でStreamlitの設定画面で決める名前と合わせます
 user = st.secrets["db_username"]
 password = st.secrets["db_password"]
 host = st.secrets["db_host"]
@@ -27,7 +25,6 @@ port = st.secrets["db_port"]
 m1_db = st.secrets["db_name"]
 
 m1_url = f'mysql+pymysql://{user}:{password}@{host}:{port}/{m1_db}?charset=utf8'
-m1_engine = sa.create_engine(m1_url, echo=False)
 
 # engine作成
 m1_engine = sa.create_engine(m1_url, echo=False)
