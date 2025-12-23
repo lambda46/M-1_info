@@ -149,7 +149,7 @@ if year == "通算":
             width="stretch",
             column_config={
                 # コンビ名の設定（そのままでOK）
-                "コンビ名": st.column_config.TextColumn("コンビ名", width="medium"),
+                "コンビ名": st.column_config.TextColumn("コンビ名", width="small"),
                 # 年の設定（必要であれば追加）
                 "年": st.column_config.NumberColumn("年", format="%d"), 
             }
@@ -281,7 +281,7 @@ else:
                 # インデックス名（"コンビ名"）を指定して設定します
                 "コンビ名": st.column_config.TextColumn(
                     "コンビ名",     # ヘッダーに表示する名前
-                    width="medium"  # 幅の設定: "small", "medium", "large" から選べます
+                    width="small"  # 幅の設定: "small", "medium", "large" から選べます
                 )
             }
         )
