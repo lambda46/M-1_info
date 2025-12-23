@@ -1,4 +1,3 @@
-# --- 修正後のコード（冒頭部分） ---
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
@@ -8,19 +7,11 @@ import sqlalchemy as sa
 from sqlalchemy import create_engine
 from sqlalchemy import text as q_text
 
-# ★ここが重要！余計なconfig読み込みを消し、SQLiteに一本化します★
-
-# データベースファイルのパス（同じフォルダにある hoge.db を探す）
-# ※ Windows/Mac両対応のため相対パスで指定
 db_path = "sqlite:///hoge.db"
 
-# engine作成
-# echo=False にしておくとログが綺麗になります
 m1_engine = create_engine(db_path, connect_args={"check_same_thread": False}, echo=False)
 
-# --- ここから下は、既存の関数や処理（calculate_hensachiなど）をそのまま続けてOK ---
 
-# --- 偏差値計算の関数 ---
 def calculate_hensachi(x):
     # 標準偏差が0（全員同点など）の場合はエラーになるのを防ぐため、0なら偏差値50を返す
     if x.std() == 0:
