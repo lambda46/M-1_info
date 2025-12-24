@@ -254,16 +254,16 @@ else:
     df_final_score = pd.merge(df_final_score, df_final_round[["combi_name", "performance_order"]], on=["combi_name"], how="left")
     df_score = df_score.rename(columns={"Total": "合計得点", "Average": "得点率", "performance_order": "出番順", "combi_name": "コンビ名"})
     df_hensachi = df_hensachi.rename(columns={"Total": "合計得点", "Average": "得点率", "performance_order": "出番順", "combi_name": "コンビ名"})
-    df_final_score = df_final_score.rename(columns={"Total": "各得票数", "performance_order": "出番順", "combi_name": "コンビ名"})
+    df_final_score = df_final_score.rename(columns={"Total": "獲得票数", "performance_order": "出番順", "combi_name": "コンビ名"})
     #df_score = df_score.reset_index(drop=True)
     df_score["偏差値"] = df_score["合計得点"].transform(calculate_hensachi)
     df_hensachi["偏差値"] = df_hensachi["合計得点"].transform(calculate_hensachi)
     df_score["順位"] = df_score["合計得点"].rank(ascending=False, method="min")
     df_hensachi["順位"] = df_hensachi["合計得点"].rank(ascending=False, method="min")
-    df_final_score["順位"] = df_final_score["各得票数"].rank(ascending=False, method="min")
+    df_final_score["順位"] = df_final_score["獲得票数"].rank(ascending=False, method="min")
     df_score = df_score[["コンビ名", "出番順", "順位", "合計得点", "得点率", "偏差値"] + judges]
     df_hensachi = df_hensachi[["コンビ名", "出番順", "順位", "合計得点", "得点率", "偏差値"] + judges]
-    df_final_score = df_final_score[["コンビ名", "出番順", "順位", "各得票数"] + judges]
+    df_final_score = df_final_score[["コンビ名", "出番順", "順位", "獲得票数"] + judges]
     #df_score.index = combis
     #df_hensachi.index = combis
     #df_final_score.index = final_combis
