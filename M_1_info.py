@@ -151,6 +151,63 @@ if year == "通算":
                 "年": st.column_config.NumberColumn("年", format="%d"), 
             }
         )
+    else:
+        total_score_df = df_1st_round.groupby(["performance_id", "year", "performance_order", "combi_name", "agency"], as_index=False).agg(
+            total_score = ("score", "sum"),
+            avg_score=("score", "mean")
+        )
+        year_df = total_score_df.groupby(["year"], as_index=False).agg(
+            max_score = ("total_score", "max"),
+            min_score = ("total_score", "min"),
+            avg_score=("total_score", "mean"),
+        )
+        judge_score_df = df_1st_round.groupby(["year"], as_index=False).agg(
+            judge_n=("judge_name", "nunique"),
+            combi_n=("combi_name", "nunique"),
+            max_judge = ("score", "max"),
+            min_judge=("score", "min"),
+            avg_judge=("score", "mean")
+        )
+
+        year_df = pd.merge(year_df, judge_score_df, on="year", how="left")
+        year_df = year_df.rename(columns={"year": "年", "max_score": "最高得点", "min_score": "最低得点", "avg_score": "平均点",
+                                          "max_judge": "最高審査得点", "min_judge": "最低審査得点", "avg_judge": "平均審査得点", 
+                                          "judge_n": "審査員人数", "combi_n": "出場コンビ数"})[[
+                                              "年", "最高得点", "最低得点", "平均点", "最高審査得点", "最低審査得点", "平均審査得点",
+                                              "出場コンビ数", "審査員人数"
+                                          ]]
+        
+        year_df = year_df.set_index("年")
+
+        styled_year = (
+            year_df.style
+            .background_gradient(cmap="coolwarm", subset=["最高得点", "最低得点", "平均点", "最高審査得点", "最低審査得点", "平均審査得点"])
+            #.background_gradient(cmap="coolwarm", subset=["偏差値"]+judges, vmin=25, vmax=75)
+            .format(
+                {"最高得点": "{:.0f}",
+                "最低得点": "{:.0f}",
+                "最高審査得点": "{:.0f}",
+                "最低審査得点": "{:.0f}",
+                "平均点": "{:.1f}",
+                "平均審査得点": "{:.1f}",
+                "審査員人数": "{:.0f}",
+                "出場コンビ数": "{:.0f}",}
+            )
+        )
+        st.dataframe(styled_year)
+
+        box_chart = px.box(df_1st_round, y = "score", x = "year", color="year", 
+                        points="all",
+                        hover_data=["combi_name", "judge_name"],
+                        labels={
+                                "score": "得点",
+                                "judge_name": "審査員",
+                                "combi_name": "コンビ名",
+                                "year": "年"
+                            },
+                            title = "得点分布"
+                            )
+        st.plotly_chart(box_chart)
 
 else:
     with cols[1]:
