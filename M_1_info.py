@@ -76,7 +76,7 @@ if year == "通算":
         with cols[2]:
             order = st.selectbox(
                 "出番順",
-                [i for i in range(1, 11)],
+                [i for i in range(1, 11)]+["トリ"],
                 index=None,
                 placeholder="出番順"
             )
@@ -109,7 +109,10 @@ if year == "通算":
             "total_score_7": "得点（7人換算）", "hensachi": "偏差値", "year": "年", "agency": "事務所"
             })
         if order:
-            df_1st_round = df_1st_round[df_1st_round["出番順"] == order]
+            if order == "トリ":
+                df_1st_round = df_1st_round.sort_values("出番順").groupby(["年"]).tail(1).sort_values("performance_id")
+            else:
+                df_1st_round = df_1st_round[df_1st_round["出番順"] == order]
         if rank_1:
             if rank_1 == "最下位":
                 df_1st_round = df_1st_round.sort_values("得点").groupby(["年"]).head(1).sort_values("performance_id")
