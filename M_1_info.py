@@ -110,7 +110,10 @@ if year == "通算":
             })
         if order:
             if order == "トリ":
-                df_1st_round = df_1st_round.sort_values("出番順").groupby(["年"]).tail(1).sort_values("performance_id")
+                df_1st_round = df_1st_round[
+                    ((((df_1st_round["年"] >= 2002)|(df_1st_round["年"] <= 2016))&(df_1st_round["出番順"] == 9))|
+                     (((df_1st_round["年"] == 2001)|(df_1st_round["年"] >= 2017))&(df_1st_round["出番順"] == 10)))
+                    ]
             else:
                 df_1st_round = df_1st_round[df_1st_round["出番順"] == order]
         if rank_1:
